@@ -43,15 +43,26 @@ public class Enemy
 
     public void Update(Player player)
     {
-        var diff = player.Position - Position;
-        float distanceToPlayer = diff.Magnitude;
+        var directionToPlayer = player.Position - Position;
+        float distanceToPlayer = directionToPlayer.Magnitude;
 
         if(distanceToPlayer < CHASE_DISTANCE)
         {
-            var dir = diff.Normalized;
-            Position += dir * moveSpeed * Time.deltaTime;
+            float playerFacing = DevMath.Vector2.Dot(directionToPlayer.Normalized, player.Direction);
 
-            Rotation = DevMath.DevMath.RadToDeg(DevMath.Vector2.Angle(new DevMath.Vector2(.0f, .0f), dir));
+            DevMath.Vector2 moveDirection;
+            if(playerFacing > .0f)
+            {
+                moveDirection = directionToPlayer.Normalized;
+            }
+            else
+            {
+                moveDirection = -directionToPlayer.Normalized;
+            }
+
+            Position += moveDirection * moveSpeed * Time.deltaTime;
+
+            Rotation = DevMath.DevMath.RadToDeg(DevMath.Vector2.Angle(new DevMath.Vector2(.0f, .0f), moveDirection));
         }
     }
 }

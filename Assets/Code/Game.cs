@@ -13,7 +13,7 @@ public class Game : MonoBehaviour
         player = new Player();
 
         enemies = new List<Enemy>();
-        for(int i = 0; i < 3; ++i)
+        for(int i = 0; i < 1; ++i)
         {
             enemies.Add(new Enemy(new DevMath.Vector2(Random.Range(.0f, Screen.width), Random.Range(.0f, Screen.height))));
         }
