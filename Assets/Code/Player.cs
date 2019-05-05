@@ -12,7 +12,7 @@ public class Player
         get; private set;
     }
 
-    public DevMath.Vector2 Direction => new DevMath.Vector2(Mathf.Cos(DevMath.DevMath.DegToRad(Rotation)), Mathf.Sin(DevMath.DevMath.DegToRad(Rotation)));
+    public DevMath.Vector2 Direction => DevMath.Vector2.DirectionFromAngle(Rotation);
     
     public float Rotation
     {
