@@ -10,8 +10,14 @@ public class Enemy
     private readonly float moveSpeed = 300.0f;
 
     private Texture2D visual;
-    
+
     public DevMath.Vector2 Position
+    {
+        get { return Circle.Position; }
+        set { Circle.Position = value; }
+    }
+
+    public DevMath.Circle Circle
     {
         get; private set;
     }
@@ -25,16 +31,19 @@ public class Enemy
     {
         visual = Resources.Load<Texture2D>("pacman");
 
+        Circle = new DevMath.Circle();
+        Circle.Radius = visual.width * .5f;
+
         Position = position;
     }
 
     public void Render()
     {
-        GUIUtility.RotateAroundPivot(Rotation, (Position + new DevMath.Vector2(visual.width * .5f, visual.height * .5f)).ToUnity());
+        GUIUtility.RotateAroundPivot(Rotation, Position.ToUnity());
 
         GUI.color = Color.red;
 
-        GUI.DrawTexture(new Rect(Position.x, Position.y, visual.width, visual.height), visual);
+        GUI.DrawTexture(new Rect(Position.x - Circle.Radius, Position.y - Circle.Radius, visual.width, visual.height), visual);
 
         GUI.color = Color.white;
 
