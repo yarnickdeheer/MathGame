@@ -38,6 +38,8 @@ public class Player
 
     private float chargeTime;
 
+    private DevMath.Rigidbody rigidbody;
+
     public Player()
     {
         visual = Resources.Load<Texture2D>("pacman");
@@ -50,6 +52,13 @@ public class Player
         pixel.Apply();
 
         Position = new DevMath.Vector2(Screen.width * .5f - visual.width * .5f, Screen.height * .5f - visual.height * .5f);
+
+        rigidbody = new DevMath.Rigidbody()
+        {
+            mass = 1.0f,
+            force = 150.0f,
+            dragCoefficient = .47f
+        };
     }
 
     public void Render()
@@ -70,12 +79,18 @@ public class Player
         GUI.matrix = Matrix4x4.identity;
     }
 
+    private void UpdatePhysics()
+    {
+        DevMath.Vector2 forceDirection = new DevMath.Vector2(-Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        rigidbody.AddForce(forceDirection, Time.deltaTime);
+
+        Position += rigidbody.Velocity;
+    }
+
     public void Update()
     {
-        var moveDirection = new DevMath.Vector2(Input.GetAxis("Horizontal"), -Input.GetAxis("Vertical"));
-        moveDirection = moveDirection.Normalized;
-
-        Position += moveDirection * moveSpeed * Time.deltaTime;
+        UpdatePhysics();
 
         var mousePos = new DevMath.Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
         var mouseDir = (mousePos - Position).Normalized;
