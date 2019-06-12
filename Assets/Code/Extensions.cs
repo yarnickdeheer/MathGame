@@ -16,4 +16,14 @@ public static class Extensions
     {
         return new DevMath.Vector2(v.x, v.y);
     }
+
+    public static Matrix4x4 ToUnity(this DevMath.Matrix4x4 m)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static DevMath.Matrix4x4 ToDevMath(this Matrix4x4 m)
+    {
+        throw new NotImplementedException();
+    }
 }
