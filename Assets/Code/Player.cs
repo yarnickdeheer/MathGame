@@ -56,8 +56,8 @@ public class Player
         rigidbody = new DevMath.Rigidbody()
         {
             mass = 1.0f,
-            force = 150.0f,
-            dragCoefficient = .47f
+            frictionCoefficient = .4f,
+            normalForce = 9.81f
         };
     }
 
@@ -77,13 +77,21 @@ public class Player
         GUI.DrawTexture(new Rect(Position.x, Position.y, distanceTraveled, 1.0f), pixel);
 
         GUI.matrix = Matrix4x4.identity;
+
+        if(Input.GetKey(KeyCode.Q))
+		{
+            GUILayout.BeginVertical();
+            GUILayout.Label($"Velocity X: {rigidbody.Velocity.x / Time.deltaTime}, Y: {rigidbody.Velocity.y / Time.deltaTime} pixels/second");
+            GUILayout.Label($"Acceleration: {rigidbody.Acceleration / Time.deltaTime} pixels/second^2");
+            GUILayout.EndVertical();
+		}
     }
 
     private void UpdatePhysics()
     {
-        DevMath.Vector2 forceDirection = new DevMath.Vector2(-Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        DevMath.Vector2 forceDirection = new DevMath.Vector2(Input.GetAxis("Horizontal"), -Input.GetAxis("Vertical"));
 
-        rigidbody.AddForce(forceDirection, Time.deltaTime);
+        rigidbody.UpdateVelocityWithForce(forceDirection, 5.0f, Time.deltaTime);
 
         Position += rigidbody.Velocity;
     }
